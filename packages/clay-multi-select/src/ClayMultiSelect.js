@@ -107,6 +107,10 @@ class ClayMultiSelect extends ClayComponent {
 	 * @return {?Boolean} If the event has been prevented or not.
 	 */
 	_handleItemAdded(value, data, event, eventName = 'itemAdded') {
+		if (!this.acceptCustomItems && eventName != 'itemSelected') {
+			return;
+		}
+
 		const label = value.toLowerCase().replace(',', '');
 
 		if (
@@ -330,6 +334,18 @@ class ClayMultiSelect extends ClayComponent {
  * @type {!Object}
  */
 ClayMultiSelect.STATE = {
+	/**
+	 * Flag that indicates if user can type custom items.
+	 * If false, items can only be selected from
+	 * the autocomplete list or the "select" button.
+	 *
+	 * @default true
+	 * @instance
+	 * @memberof ClayMultiSelect
+	 * @type {?bool}
+	 */
+	acceptCustomItems: Config.bool().value(true),
+
 	/**
 	 * Variation name to render different deltemplates.
 	 * @default undefined
