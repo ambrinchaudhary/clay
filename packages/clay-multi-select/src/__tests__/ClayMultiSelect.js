@@ -325,6 +325,44 @@ describe('ClayMultiSelect', function() {
 				);
 				expect(component).toMatchSnapshot();
 			});
+
+			it('should not emit an event when press enter on the input and acceptCustomItems is disabled', () => {
+				component = new ClayMultiSelect({
+					acceptCustomItems: false,
+					dataSource,
+					helpText,
+					spritemap,
+				});
+
+				const spy = jest.spyOn(component, 'emit');
+				const {input} = component.refs.autocomplete.refs;
+
+				input.value = 'foo';
+				triggerEvent(input, 'keydown', {key: 'Enter'});
+
+				jest.runAllTimers();
+
+				expect(spy).not.toHaveBeenCalled();
+			});
+
+			it('should not emit an event when press comma on the input and acceptCustomItems is disabled', () => {
+				component = new ClayMultiSelect({
+					acceptCustomItems: false,
+					dataSource,
+					helpText,
+					spritemap,
+				});
+
+				const spy = jest.spyOn(component, 'emit');
+				const {input} = component.refs.autocomplete.refs;
+
+				input.value = 'foo';
+				triggerEvent(input, 'input', {data: ','});
+
+				jest.runAllTimers();
+
+				expect(spy).not.toHaveBeenCalled();
+			});
 		});
 
 		describe('itemRemoved', () => {

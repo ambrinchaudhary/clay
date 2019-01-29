@@ -56,7 +56,7 @@ class ClayMultiSelect extends ClayComponent {
 	 * @protected
 	 * @return {Boolean} If the event has been prevented or not.
 	 */
-	_handleDataChange(event) {
+	_handleDataChange(event) {console.log('datachange');console.log(event);
 		return !this.emit({
 			data: event.data,
 			name: 'dataChange',
@@ -87,7 +87,7 @@ class ClayMultiSelect extends ClayComponent {
 	 * @protected
 	 * @return {Boolean} If the event has been prevented or not.
 	 */
-	_handleFilteredItemsChange(event) {
+	_handleFilteredItemsChange(event) {console.log('filteredItems');
 		this.filteredItems = event.data;
 
 		return !this.emit({
@@ -107,11 +107,16 @@ class ClayMultiSelect extends ClayComponent {
 	 * @return {?Boolean} If the event has been prevented or not.
 	 */
 	_handleItemAdded(value, data, event, eventName = 'itemAdded') {
-		if (!this.acceptCustomItems && eventName != 'itemSelected') {
-			return;
+		const label = value.toLowerCase().replace(',', '');
+
+		if (!this.acceptCustomItems && eventName !== 'itemSelected') {
+			if (!this.dataSource.find(label)) {
+				console.error('error');
+				return;
+				//trow error
+			}
 		}
 
-		const label = value.toLowerCase().replace(',', '');
 
 		if (
 			label.trim() &&
